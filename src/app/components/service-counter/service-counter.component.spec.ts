@@ -12,7 +12,7 @@ describe('ServiceCounterComponent: integration test', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
-      providers: [CounterService],
+      providers: [CounterService], // This line adds the CounterService to the testing Module
     }).compileComponents();
 
     fixture = TestBed.createComponent(ServiceCounterComponent);
@@ -23,18 +23,21 @@ describe('ServiceCounterComponent: integration test', () => {
     expectText(fixture, 'count', '0');
   });
 
+  // check if the count has incremented after the increment button was clicked
   it('increments the count', () => {
     click(fixture, 'increment-button');
     fixture.detectChanges();
     expectText(fixture, 'count', '1');
   });
 
+  // check if the count has decremented after the decrement button was clicked
   it('decrements the count', () => {
     click(fixture, 'decrement-button');
     fixture.detectChanges();
     expectText(fixture, 'count', '-1');
   });
 
+  // check if the count has been reset after the reset button was clicked
   it('resets the count', () => {
     const newCount = 456;
     setFieldValue(fixture, 'reset-input', String(newCount));
@@ -44,6 +47,11 @@ describe('ServiceCounterComponent: integration test', () => {
   });
 });
 
+/** Unit Test for the ServiceCounterComponent
+  2 main requirements of fake dependencies
+  - Equivalen of fake and original: the fake must have a type derived from the original
+  - Effective faking: the original stays untouched
+*/
 describe('ServiceCounterComponent: unit test', () => {
   const currentCount = 123;
 
@@ -52,7 +60,8 @@ describe('ServiceCounterComponent: unit test', () => {
   let fakeCounterService: CounterService;
 
   beforeEach(async () => {
-    // Create fake
+    // ACT phase
+    // This code creates an object with four methods, all of them being spies.
     fakeCounterService = jasmine.createSpyObj<CounterService>('CounterService', {
       getCount: of(currentCount),
       increment: undefined,
@@ -70,6 +79,7 @@ describe('ServiceCounterComponent: unit test', () => {
     fixture.detectChanges();
   });
 
+  // ASSERT face
   it('shows the count', () => {
     expectText(fixture, 'count', String(currentCount));
     expect(fakeCounterService.getCount).toHaveBeenCalled();
@@ -93,6 +103,7 @@ describe('ServiceCounterComponent: unit test', () => {
   });
 });
 
+// Using "Pick" and "keyof", we create a derived type that only contains the public members
 describe('ServiceCounterComponent: unit test with minimal Service logic', () => {
   const newCount = 456;
 

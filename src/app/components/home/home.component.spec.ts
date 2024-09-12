@@ -23,17 +23,21 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // HomeComponent unit test checks that an app-counter element is present
   describe('independent counter', () => {
     it('renders an independent counter', () => {
       const el = findComponent(fixture, 'app-counter');
       expect(el).toBeTruthy();
     });
 
+    // check  if startCount Input is passed correctly
     it('passes a start count', () => {
       const el = findComponent(fixture, 'app-counter');
       expect(el.properties.startCount).toBe(5);
     });
 
+    // check if HomeComponent handles countChange event
+    // simularte the Output using triggerEventHandler method
     it('listens for count changes', () => {
       spyOn(console, 'log');
       const el = findComponent(fixture, 'app-counter');
@@ -46,11 +50,14 @@ describe('HomeComponent', () => {
     });
   });
 
+  // Since Child component doesn't have Inputs or Outputs
+  // check the presence of app-service-counter
   it('renders a service counter', () => {
     const el = findComponent(fixture, 'app-service-counter');
     expect(el).toBeTruthy();
   });
 
+  // check the presence of app-ngrx-counter
   it('renders a NgRx counter', () => {
     const el = findComponent(fixture, 'app-ngrx-counter');
     expect(el).toBeTruthy();
